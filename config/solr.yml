@@ -8,5 +8,5 @@ test:
   <<: *defaults
 production:
   jetty_path: "/usr/local/jetty"
-  solr_data_dir: "/data/solr/eat2treat-data"
+  solr_data_dir: "/data/solr/search-index"
   solr_server_url: "http://localhost:8080/solr"
