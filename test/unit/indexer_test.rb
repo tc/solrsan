@@ -1,6 +1,10 @@
 require 'test_helper'
 require 'search_test_helper'
 
+class Document
+  public :indexed_fields
+end
+
 class IndexerTest < Test::Unit::TestCase
   include SearchTestHelper
 
@@ -11,8 +15,8 @@ class IndexerTest < Test::Unit::TestCase
   def teardown
   end
 
-  def test_as_solr_document
-    created_doc = @document.as_solr_document
+  def test_indexed_fields
+    created_doc = @document.indexed_fields
     assert_equal @document.attributes[:title], created_doc[prepend_prefix('title')]
     assert_equal @document.attributes[:author], created_doc[prepend_prefix('author')]
     assert_equal @document.attributes[:content], created_doc[prepend_prefix('content')]
