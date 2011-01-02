@@ -36,5 +36,5 @@ First release.
 
 ## Copyright
 
-Copyright (c) 2009 Tommy Chheng. See LICENSE for details.
+Copyright (c) 2011 Tommy Chheng. See LICENSE for details.
 
