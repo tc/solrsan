@@ -4,25 +4,30 @@ module Solrsan
 
     module InstanceMethods
       def as_solr_document
-         @attributes
+         self.attributes
       end
 
-      private
       def indexed_fields
-         raise "Object has have a valid as_solr_document defined" if as_solr_document.nil?
-         class_name = self.class.to_s.downcase
+        item_id = self.attributes[:_id] || self.attributes[:id]
+        raise "Object has have a valid as_solr_document defined" if as_solr_document.nil?
+        raise "Object must have an id attribute defined before being indexed" if item_id.nil?
+        class_name = self.class.to_s.underscore
 
-         doc = {:type => class_name}
-         doc[:id] = "#{class_name}-#{self.attributes[:id].to_s}"
+        doc = {:type => class_name}
+        doc[:id] = "#{class_name}-#{item_id.to_s}"
 
-         prefixed = as_solr_document.reject{|k,v| k == :id}
-         prefixed = prefixed.reduce({}) do |acc, tuple|
-           value = tuple[1]
-           value = value.to_time.utc.xmlschema if value.is_a?(Date) || value.is_a?(Time)
-           acc["#{class_name}_#{tuple[0]}"] = value
-           acc 
-         end
-         doc.merge(prefixed)
+        prefixed = as_solr_document.reject{|k,v| k == :id}
+        prefixed = prefixed.reduce({}) do |acc, tuple|
+          value = tuple[1]
+          value = value.to_time.utc.xmlschema if value.is_a?(Date) || value.is_a?(Time)
+          acc["#{class_name}_#{tuple[0]}"] = value
+          acc 
+        end
+        doc.merge(prefixed)
+      end
+
+      def index
+        self.class.index(self)
       end
     end
 

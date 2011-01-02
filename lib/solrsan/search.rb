@@ -2,10 +2,8 @@ module Solrsan
   module Search
     extend ActiveSupport::Concern
     module ClassMethods
-      @rsolr = Solrsan::Config.instance.rsolr_object
-      
       def class_name
-        to_s.downcase
+        to_s.underscore
       end
         
       def prefix
@@ -19,7 +17,7 @@ module Solrsan
       end
 
       def search(search_params={})
-        raise "Could not connect to Solr" unless @rsolr
+        @rsolr ||= Solrsan::Config.instance.rsolr_object
 
         solr_params = parse_params_for_solr(search_params)
         solr_response = @rsolr.find(solr_params)
