@@ -40,7 +40,7 @@ module Solrsan
         #url = "#{Solrsan::Config.instance.solr_server_url}/terms?terms.fl=#{solr_field_name}&terms.prefix=#{term}&wt=json&omitHeader=true"
 
         res = Net::HTTP.get_response(URI.parse(url))
-        results = JSON.parse(res.body)
+        results = ActiveSupport::JSON.decode(res.body)
 
         #use results["terms"][solr_field_name] when upgrading to solr 3.1
         results["terms"][1].each_slice(2).map {|name, matches| {'name' => name, 'matches' => matches}}

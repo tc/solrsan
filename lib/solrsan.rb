@@ -1,5 +1,5 @@
 require 'rsolr-ext'
-require 'json'
+require 'active_support/json'
 require 'active_support/concern'
 require 'active_support/core_ext'
 
