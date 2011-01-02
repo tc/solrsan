@@ -16,7 +16,7 @@ module Solrsan
         doc = {:type => class_name}
         doc[:id] = "#{class_name}-#{item_id.to_s}"
 
-        prefixed = as_solr_document.reject{|k,v| k == :id}
+        prefixed = as_solr_document.reject{|k,v| k == :id || k == :_id}
         prefixed = prefixed.reduce({}) do |acc, tuple|
           value = tuple[1]
           value = value.to_time.utc.xmlschema if value.is_a?(Date) || value.is_a?(Time)
