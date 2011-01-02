@@ -1,10 +1,6 @@
 require 'test_helper'
 require 'search_test_helper'
 
-class Document
-  public :indexed_fields
-end
-
 class IndexerTest < Test::Unit::TestCase
   include SearchTestHelper
 
