@@ -209,12 +209,12 @@
    <field name="id" type="string" indexed="true" stored="true" required="true" />
    <field name="type" type="string" indexed="true" stored="true"/>
 
-   <field name="document_title" type="string" indexed="true" stored="true"/>
-   <field name="document_content" type="text" indexed="true" stored="true"/>
-   <field name="document_author" type="string" indexed="true" stored="true"/>
-   <field name="document_review_count" type="tint" indexed="true" stored="true"/>
-   <field name="document_scores" multiValued="true" type="string" indexed="true" stored="true"/>
-   <field name="document_created_at" type="tdate" indexed="true" stored="true"/>
+   <field name="title" type="string" indexed="true" stored="true"/>
+   <field name="content" type="text" indexed="true" stored="true"/>
+   <field name="author" type="string" indexed="true" stored="true"/>
+   <field name="review_count" type="tint" indexed="true" stored="true"/>
+   <field name="scores" multiValued="true" type="string" indexed="true" stored="true"/>
+   <field name="created_at" type="tdate" indexed="true" stored="true"/>
 
    <!-- Dynamic Fields -->
    <dynamicField name="*_s" type="string" indexed="true" stored="true"/>

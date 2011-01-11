@@ -25,17 +25,23 @@ namespace :solr do
   task(:start) do
     # -Dsolr.clustering.enabled=true
     cmd = "#{solr_server_dir} #{start_solr_cmd } #{solr_params} &"
+    run_system_command(cmd)
+  end
+
+  desc "Stop solr"
+  task(:stop) do
+    cmd = kill_matching_process_cmd(solr_params)
+    run_system_command(cmd)
+  end
+
+  def run_system_command(cmd)
     puts cmd
     status = system(cmd)
     exit($?.exitstatus)
   end
 
-  desc "Stop solr"
-  task(:stop) do
-    stop_solr_cmd = "echo `ps -ef | grep -v grep | grep \"#{solr_params.gsub("-", "\\-")}\" | awk '{print $2}'` | xargs -o kill"
-    puts stop_solr_cmd
-    status = system(stop_solr_cmd)
-    exit($?.exitstatus)
+  def kill_matching_process_cmd(process_name)
+      cmd = "echo `ps -ef | grep -v grep | grep \"#{process_name.gsub("-", "\\-")}\" | awk '{print $2}'` | xargs kill"
   end
 
 #  #example of a task to index all items

@@ -20,7 +20,7 @@ module Solrsan
         prefixed = prefixed.reduce({}) do |acc, tuple|
           value = tuple[1]
           value = value.to_time.utc.xmlschema if value.is_a?(Date) || value.is_a?(Time)
-          acc["#{class_name}_#{tuple[0]}"] = value
+          acc[tuple[0]] = value
           acc 
         end
         doc.merge(prefixed)

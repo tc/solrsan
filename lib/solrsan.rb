@@ -1,4 +1,4 @@
-require 'rsolr-ext'
+require 'rsolr'
 require 'active_support/json'
 require 'active_support/concern'
 require 'active_support/core_ext'
