@@ -13,17 +13,16 @@ module Solrsan
         raise "Object must have an id attribute defined before being indexed" if item_id.nil?
         class_name = self.class.to_s.underscore
 
-        doc = {:type => class_name}
-        doc[:id] = "#{class_name}-#{item_id.to_s}"
+        doc = {:type => class_name, :id => "#{class_name}-#{item_id.to_s}"}
 
-        prefixed = as_solr_document.reject{|k,v| k == :id || k == :_id}
-        prefixed = prefixed.reduce({}) do |acc, tuple|
+        initial_document_fields = as_solr_document.reject{|k,v| k == :id || k == :_id}
+        converted_fields = initial_document_fields.reduce({}) do |acc, tuple|
           value = tuple[1]
           value = value.to_time.utc.xmlschema if value.is_a?(Date) || value.is_a?(Time)
           acc[tuple[0]] = value
           acc 
         end
-        doc.merge(prefixed)
+        doc.merge(converted_fields)
       end
 
       def index
