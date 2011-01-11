@@ -8,7 +8,7 @@ module Solrsan
       end
 
       def indexed_fields
-        item_id = self.attributes[:_id] || self.attributes[:id]
+        item_id = self.id || self.attributes[:_id] || self.attributes[:id]
         raise "Object has have a valid as_solr_document defined" if as_solr_document.nil?
         raise "Object must have an id attribute defined before being indexed" if item_id.nil?
         class_name = self.class.to_s.underscore
