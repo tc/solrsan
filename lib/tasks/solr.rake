@@ -1,3 +1,5 @@
+require 'uri'
+
 namespace :solr do
   env =  "development"
   base_dir = File.join(File.dirname(__FILE__), "..", "..")
