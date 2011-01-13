@@ -27,6 +27,10 @@ The generator will copy the following files into your application.
   config/initializers/solrsan.rb
   lib/tasks/solr.rake
 
+##
+The fields are required for each solr document:
+id, db_id, type
+
 ---
 ## Changelog
 0.0.1

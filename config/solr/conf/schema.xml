@@ -207,7 +207,8 @@
 
  <fields>
    <field name="id" type="string" indexed="true" stored="true" required="true" />
-   <field name="type" type="string" indexed="true" stored="true"/>
+   <field name="db_id" type="string" indexed="false" stored="true" required="true" />
+   <field name="type" type="string" indexed="true" stored="true" required="true"/>
 
    <field name="title" type="string" indexed="true" stored="true"/>
    <field name="content" type="text" indexed="true" stored="true"/>

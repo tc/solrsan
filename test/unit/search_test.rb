@@ -5,12 +5,12 @@ class SearchTest < Test::Unit::TestCase
   include SearchTestHelper
 
   def setup
-    Document.clear_search_index!
+    Document.destroy_all_index_documents!
     @document = document_mock
   end
   
   def teardown
-    Document.clear_search_index!
+    Document.destroy_all_index_documents!
   end
 
   def test_simple_query

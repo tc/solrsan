@@ -13,6 +13,7 @@ class IndexerTest < Test::Unit::TestCase
 
   def test_indexed_fields
     created_doc = @document.indexed_fields
+    assert_equal @document.attributes[:id], created_doc[:db_id]
     assert_equal @document.attributes[:title], created_doc[:title]
     assert_equal @document.attributes[:author], created_doc[:author]
     assert_equal @document.attributes[:content], created_doc[:content]

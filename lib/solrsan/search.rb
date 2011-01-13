@@ -6,10 +6,6 @@ module Solrsan
         to_s.underscore
       end
         
-      def prefix
-        "#{class_name}_"
-      end
-
       def perform_solr_command
         @rsolr = Solrsan::Config.instance.rsolr_object
         yield(@rsolr)
@@ -19,18 +15,15 @@ module Solrsan
       def search(search_params={})
         @rsolr ||= Solrsan::Config.instance.rsolr_object
 
+        start = search_params[:start] || 0
+        rows = search_params[:rows] || 20
+
         solr_params = parse_params_for_solr(search_params)
-        solr_response = @rsolr.get('select', :params => solr_params)
+        solr_response = @rsolr.paginate(start, rows, 'select', :params => solr_params)
         parse_solr_response(solr_response)
       end
 
       def parse_params_for_solr(search_params={})
-        page_num_default = 0
-        per_page_default = 20
-        
-        start = search_params[:start]
-        rows = search_params[:rows]
-
         { :echoParams => 'explicit',
           :fq => ["type:#{class_name}"],
           :q => "*:*"}.merge(search_params)
