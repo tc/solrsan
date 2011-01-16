@@ -19,7 +19,7 @@ namespace :solr do
 
   solr_server_dir = "cd #{jetty_path};"
   start_solr_cmd = "java -jar start.jar"
-  solr_params = "-Djetty.port=#{jetty_port} -Dsolr.solr.home=#{solr_home} -Dsolr.data.dir=#{solr_data_dir}"
+  solr_params = "jetty.port=#{jetty_port} -Dsolr.solr.home=#{solr_home} -Dsolr.data.dir=#{solr_data_dir}"
 
   desc "Start solr"
   task(:start) do
