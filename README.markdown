@@ -3,7 +3,7 @@ This gem is a lightweight wrapper for the Apache Solr API.
 
 Before you start, read the documentation for solr at http://wiki.apache.org/solr/
 
-It'll be invaluable for knowing parameters and error messages. I made a few test cases for further examples at http://github.com/tc/solrgen/tree/master/test/
+It'll be invaluable for knowing parameters and error messages. I made a few test cases for further examples at http://github.com/tc/solrsan/tree/master/test/
 
 ## HOWTO
 Install jetty:
