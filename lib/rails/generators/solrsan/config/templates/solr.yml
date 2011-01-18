@@ -1,0 +1,13 @@
+defaults: &defaults
+  jetty_path: "/Users/HOME_DIR/Sites/java/jetty"
+  solr_data_dir: "/Users/HOME_DIR/src/app_name/solr-data"
+  solr_server_url: "http://localhost:9090/solr"
+development:
+  <<: *defaults
+test:
+  <<: *defaults
+production:
+  jetty_path: "/usr/local/jetty"
+  solr_data_dir: "/data/search/appname-data"
+  solr_server_url: "http://localhost:8080/solr"
+

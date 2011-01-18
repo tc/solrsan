@@ -1,7 +1,7 @@
 defaults: &defaults
   jetty_path: "/Users/wheels/Sites/java/jetty"
   solr_data_dir: "/Users/wheels/Sites/java/jetty/solr/test-data"
-  solr_server_url: "http://localhost:9090/solr"
+  solr_server_url: "http://localhost:8888/solr"
 development:
   <<: *defaults
 test:
