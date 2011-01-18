@@ -17,7 +17,7 @@ module Solrsan
         initial_document_fields = as_solr_document.reject{|k,v| k == :id || k == :_id}
         converted_fields = initial_document_fields.reduce({}) do |acc, tuple|
           value = tuple[1]
-          value = value.to_time.utc.xmlschema if value.is_a?(Date) || value.is_a?(Time)
+          value = value.to_time.utc.xmlschema if value.responds_to?(:utc)
           acc[tuple[0]] = value
           acc 
         end
@@ -47,7 +47,7 @@ module Solrsan
       def index(doc)
         solr_docs = []
         if doc.respond_to?(:map)
-          solr_docs = doc.map{|document| as_solr_document(document) }
+          solr_docs = doc.map{|document| document.as_solr_document }
         elsif doc.respond_to?(:as_solr_document)
           solr_docs << doc.indexed_fields
         else
