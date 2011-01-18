@@ -17,7 +17,7 @@ module Solrsan
         initial_document_fields = as_solr_document.reject{|k,v| k == :id || k == :_id}
         converted_fields = initial_document_fields.reduce({}) do |acc, tuple|
           value = tuple[1]
-          value = value.to_time.utc.xmlschema if value.respond_to?(:utc)
+          value = value.to_time.utc.xmlschema if value.respond_to?(:utc) || value.is_a?(Date)
           acc[tuple[0]] = value
           acc 
         end
