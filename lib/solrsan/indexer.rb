@@ -47,7 +47,7 @@ module Solrsan
       def index(doc)
         solr_docs = []
         if doc.respond_to?(:map)
-          solr_docs = doc.map{|docment| as_solr_document(docment) }
+          solr_docs = doc.map{|document| as_solr_document(document) }
         elsif doc.respond_to?(:as_solr_document)
           solr_docs << doc.indexed_fields
         else
