@@ -47,8 +47,8 @@ module Solrsan
       def index(doc)
         solr_docs = []
         if doc.respond_to?(:map)
-          solr_docs = doc.map{|document| document.as_solr_document }
-        elsif doc.respond_to?(:as_solr_document)
+          solr_docs = doc.map{|document| document.indexed_fields }
+        elsif doc.respond_to?(:as_solr_document) && doc.respond_to?(:indexed_fields)
           solr_docs << doc.indexed_fields
         else
           raise "Indexed document must define a as_solr_document method."
