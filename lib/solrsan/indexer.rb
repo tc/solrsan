@@ -3,9 +3,6 @@ module Solrsan
     extend ActiveSupport::Concern
 
     module InstanceMethods
-      after_save :index if self.respond_to?(:after_save)
-      before_destroy :destroy_index_document if self.respond_to?(:before_destroy)
-
       def as_solr_document
          self.attributes
       end

@@ -31,6 +31,18 @@ The generator will copy the following files into your application.
 The fields are required for each solr document:
 id, db_id, type
 
+In each model, you can include a Solrsan::Search module which will include a few interface helper methods:
+index
+destroy_index_document
+search(params)
+
+You can also add hooks for thse methods:
+class Document < ActiveRecord::Base
+  include Solrsan::Search
+  after_save :index
+  before_destroy :destroy_index_document
+end
+
 ---
 ## Changelog
 0.0.1
