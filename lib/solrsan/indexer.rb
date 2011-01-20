@@ -3,6 +3,8 @@ module Solrsan
     extend ActiveSupport::Concern
 
     module InstanceMethods
+      after_save :index if self.respond_to?(:after_save)
+      before_destroy :destroy_index_document if self.respond_to?(:before_destroy)
 
       def as_solr_document
          self.attributes
@@ -41,6 +43,7 @@ module Solrsan
       def solr_id_value
         "#{self.class.to_s.underscore}-#{id_value.to_s}"
       end
+
     end
 
     module ClassMethods
