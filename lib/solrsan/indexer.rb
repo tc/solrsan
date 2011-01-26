@@ -37,7 +37,7 @@ module Solrsan
       end
 
       def solr_id_value
-        "#{self.class.to_s.underscore}-#{id_value.to_s}"
+        "#{self.class.class_name}-#{id_value.to_s}"
       end
 
     end
