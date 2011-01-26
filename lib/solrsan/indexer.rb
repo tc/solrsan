@@ -10,8 +10,7 @@ module Solrsan
       def indexed_fields
         raise "Object has have a valid as_solr_document defined" if as_solr_document.nil?
 
-        class_name = self.class.to_s.underscore
-        doc = {:type => class_name, :db_id => id_value, :id => solr_id_value}
+        doc = {:type => self.class.class_name, :db_id => id_value, :id => solr_id_value}
 
         initial_document_fields = as_solr_document.reject{|k,v| k == :id || k == :_id}
         converted_fields = initial_document_fields.reduce({}) do |acc, tuple|
