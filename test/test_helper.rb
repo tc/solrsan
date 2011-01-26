@@ -4,6 +4,13 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), "..", "lib"))
 MODELS = File.join(File.dirname(__FILE__), "models")
 $LOAD_PATH.unshift(MODELS)
 
+#simulate rails env
+class Rails
+  def self.env
+    "test"
+  end
+end
+
 require "rubygems"
 require "test/unit"
 require 'solrsan'

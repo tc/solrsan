@@ -44,3 +44,17 @@ module Solrsan
     end
   end
 end
+
+# namespace test documents
+if defined?(Rails) && Rails.env == "test"
+  module Solrsan
+    module Search
+      extend ActiveSupport::Concern
+      module ClassMethods
+        def class_name
+          "#{to_s.underscore}_test"
+        end
+      end
+    end
+  end
+end
