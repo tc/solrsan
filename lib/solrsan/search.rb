@@ -19,8 +19,17 @@ module Solrsan
         rows = search_params[:rows] || 20
 
         solr_params = parse_params_for_solr(search_params)
-        solr_response = @rsolr.paginate(start, rows, 'select', :params => solr_params)
-        parse_solr_response(solr_response)
+
+        begin
+          solr_response = @rsolr.paginate(start, rows, 'select', :params => solr_params)
+          parse_solr_response(solr_response)
+        rescue RSolr::Error::Http => e
+          {:docs => [], 
+           :metadata => 
+            {:error => {:http_status_code => e.response[:status], 
+                        :http_message_status => RSolr::Error::Http::STATUS_CODES[e.response[:status].to_i],
+                        :full_message => e.message}}}
+        end
       end
 
       def parse_params_for_solr(search_params={})

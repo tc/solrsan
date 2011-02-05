@@ -48,6 +48,14 @@ class SearchTest < Test::Unit::TestCase
 
     assert_equal [second_result_name, first_result_name].sort.reverse, [first_result_name, second_result_name]
   end
+  
+  def test_invalid_query_should_return_error_message_in_metadata
+    response = Document.search(:q => "http://tommy.chheng.com")
+    docs = response[:docs]
+    metadata = response[:metadata]
 
+    assert_not_nil response[:metadata][:error]
+    assert_equal 400, response[:metadata][:error][:http_status_code]
+  end
 end
 
