@@ -57,5 +57,28 @@ class SearchTest < Test::Unit::TestCase
     assert_not_nil response[:metadata][:error]
     assert_equal 400, response[:metadata][:error][:http_status_code]
   end
+
+  def test_parse_facet_counts
+    facet_counts = {'facet_queries'=>{},
+      'facet_fields' => {'language' => ["Scala", 2, "Ruby", 1, "Java", 0]},
+      'facet_dates'=>{}}
+    
+    facet_counts = Document.parse_facet_counts(facet_counts)
+    
+    assert_equal ["Scala", "Ruby", "Java"], facet_counts['facet_fields']['language'].keys
+  end
+
+  def test_text_faceting
+    Document.index(Document.new(:id => 3, :author => "Bert", :title => "solr lucene",:review_count => 10))
+    Document.index(Document.new(:id => 4, :author => "Ernie", :title => "lucene solr", :review_count => 5))
+    
+    response = Document.search(:q => "solr", :'facet.field' => ['author'])
+    docs = response[:docs]
+    facet_counts = response[:facet_counts]
+    assert_not_nil facet_counts["facet_fields"]["author"]
+
+    author_facet_entries = facet_counts["facet_fields"]["author"]
+    assert author_facet_entries.keys.include?("Bert") && author_facet_entries.keys.include?("Ernie")
+  end
 end
 

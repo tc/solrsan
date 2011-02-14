@@ -35,21 +35,42 @@ module Solrsan
       def parse_params_for_solr(search_params={})
         { :echoParams => 'explicit',
           :fq => ["type:#{class_name}"],
-          :q => "*:*"}.merge(search_params)
+          :q => "*:*",
+          :facet => "on",
+          :'facet.mincount' => 1}.merge(search_params)
       end
 
       def parse_solr_response(solr_response)
         docs = solr_response['response']['docs']
+        parsed_facet_counts = parse_facet_counts(solr_response['facet_counts'])
+
         metadata = {
-          :facet_counts => solr_response['response']['facets'],
           :total_count => solr_response['response']['numFound'],
           :start => solr_response['response']['start'],
           :rows => solr_response['responseHeader']['params']['rows'],
           :time => solr_response['responseHeader']['QTime'],
           :status => solr_response['responseHeader']['status']
         }
-        {:docs => docs, :metadata =>  metadata}
+        {:docs => docs, :metadata =>  metadata, :facet_counts => parsed_facet_counts}
       end
+
+      def parse_facet_counts(facet_counts)
+        facet_counts['facet_fields'] = facet_counts['facet_fields'].reduce({}) do |acc, facet_collection|
+          acc[facet_collection[0]] = map_facet_array_to_facet_hash(facet_collection[1])
+          acc
+        end
+        facet_counts
+      end
+    
+      # solr facet_fields comes in tuple array format []
+      def map_facet_array_to_facet_hash(facet_collection)
+        if facet_collection.is_a?(Array)
+          facet_collection.each_slice(2).reduce({}){|acc, tuple| acc[tuple[0]] = tuple[1]; acc}
+        else
+          facet_collection
+        end
+      end
+
     end
   end
 end
