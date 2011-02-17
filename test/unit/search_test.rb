@@ -58,7 +58,7 @@ class SearchTest < Test::Unit::TestCase
     assert_equal 400, response[:metadata][:error][:http_status_code]
   end
 
-  def test_parse_facet_counts
+  def test_parse_facet_fields
     facet_counts = {'facet_queries'=>{},
       'facet_fields' => {'language' => ["Scala", 2, "Ruby", 1, "Java", 0]},
       'facet_dates'=>{}}
@@ -66,6 +66,15 @@ class SearchTest < Test::Unit::TestCase
     facet_counts = Document.parse_facet_counts(facet_counts)
     
     assert_equal ["Scala", "Ruby", "Java"], facet_counts['facet_fields']['language'].keys
+  end
+
+  def test_parse_facet_queries
+    facet_counts = {"facet_queries"=>{"funding:[0 TO 5000000]"=>1, "funding:[10000000 TO 50000000]"=>0}, "facet_fields"=>{}, "facet_dates"=>{}}
+
+    facet_counts = Document.parse_facet_counts(facet_counts)
+
+    expected = {"funding"=>{"[0 TO 5000000]"=>1, "[10000000 TO 50000000]"=>0}}
+    assert_equal expected, facet_counts['facet_queries']
   end
 
   def test_text_faceting
@@ -80,5 +89,6 @@ class SearchTest < Test::Unit::TestCase
     author_facet_entries = facet_counts["facet_fields"]["author"]
     assert author_facet_entries.keys.include?("Bert") && author_facet_entries.keys.include?("Ernie")
   end
+
 end
 

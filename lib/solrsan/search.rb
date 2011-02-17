@@ -55,10 +55,25 @@ module Solrsan
       end
 
       def parse_facet_counts(facet_counts)
+        return {} if facet_counts.nil?
+
         facet_counts['facet_fields'] = facet_counts['facet_fields'].reduce({}) do |acc, facet_collection|
           acc[facet_collection[0]] = map_facet_array_to_facet_hash(facet_collection[1])
           acc
         end
+
+        facet_counts['facet_queries'] = facet_counts['facet_queries'].group_by{|k,v| k.split(":").first}.reduce({}) do |acc, facet_collection|
+          facet_name = facet_collection[0]
+          values = facet_collection[1]
+
+          acc[facet_name] = values.reduce({}) do |inner_acc, tuple|
+            range = tuple[0].split(":")[1]
+            inner_acc[range] = tuple[1]
+            inner_acc
+          end
+          acc
+        end
+
         facet_counts
       end
     
