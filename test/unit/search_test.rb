@@ -90,5 +90,18 @@ class SearchTest < Test::Unit::TestCase
     assert author_facet_entries.keys.include?("Bert") && author_facet_entries.keys.include?("Ernie")
   end
 
+  def test_range_facting
+    Document.index(Document.new(:id => 3, :author => "Bert", :title => "solr lucene",:review_count => 10))
+    Document.index(Document.new(:id => 4, :author => "Ernie", :title => "lucene solr", :review_count => 5))
+    
+    response = Document.search(:q => "solr", :'facet.field' => ['author'], :'facet.query' => ["review_count:[1 TO 5]", "review_count:[6 TO 10]"])
+    docs = response[:docs]
+    facet_counts = response[:facet_counts]
+
+    assert_not_nil facet_counts["facet_fields"]["author"]
+    assert_not_nil facet_counts["facet_queries"]["review_count"]
+    assert_equal({"[1 TO 5]"=>1, "[6 TO 10]"=>1}, facet_counts["facet_queries"]["review_count"])
+  end
+
 end
 
