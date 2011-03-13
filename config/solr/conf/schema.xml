@@ -214,6 +214,7 @@
    <field name="content" type="text" indexed="true" stored="true"/>
    <field name="author" type="string" indexed="true" stored="true"/>
    <field name="review_count" type="tint" indexed="true" stored="true"/>
+   <field name="tags" multiValued="true" type="string" indexed="true" stored="true"/>
    <field name="scores" multiValued="true" type="string" indexed="true" stored="true"/>
    <field name="created_at" type="tdate" indexed="true" stored="true"/>
 

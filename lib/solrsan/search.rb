@@ -33,11 +33,12 @@ module Solrsan
       end
 
       def parse_params_for_solr(search_params={})
-        { :echoParams => 'explicit',
-          :fq => ["type:#{class_name}"],
+        solr_params = { :echoParams => 'explicit',
           :q => "*:*",
           :facet => "on",
           :'facet.mincount' => 1}.merge(search_params)
+        solr_params[:fq] = ["type:#{class_name}"] + parse_fq(search_params[:fq])
+        solr_params
       end
 
       def parse_solr_response(solr_response)
@@ -52,6 +53,23 @@ module Solrsan
           :status => solr_response['responseHeader']['status']
         }
         {:docs => docs, :metadata =>  metadata, :facet_counts => parsed_facet_counts}
+      end
+
+      def parse_fq(fq)
+        return [] if fq.nil?
+        fq.map{|ele| parse_element_in_fq(ele)}.flatten
+      end
+
+      def parse_element_in_fq(element)
+        if element.is_a?(String)
+          element
+        elsif element.is_a?(Hash)
+          element.map do |k,values|
+            values.map{|value| "#{k}:\"#{value}\""}
+          end
+        else
+          raise "fq parameter must be a string or hash"
+        end
       end
 
       def parse_facet_counts(facet_counts)
