@@ -1,6 +1,6 @@
 defaults: &defaults
-  jetty_path: "/Users/tcc/Sites/java/jetty"
-  solr_data_dir: "/Users/tcc/src/app_name/solr-index"
+  jetty_path: "/usr/local/jetty"
+  solr_data_dir: "/tmp/jetty/solr/solrsan-test-index"
   solr_server_url: "http://localhost:9090/solr"
 development:
   <<: *defaults
