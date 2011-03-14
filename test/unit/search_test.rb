@@ -77,11 +77,19 @@ class SearchTest < Test::Unit::TestCase
     assert_equal expected, facet_counts['facet_queries']
   end
   
-  def test_parse_fq_with_hash_args
+  def test_parse_fq_with_hash_array_args
     params = {:fq => [{:tags => ["ruby", "scala"]}]}
     filters = Document.parse_fq(params[:fq])
 
     expected = ["tags:\"ruby\"", "tags:\"scala\""]
+    assert_equal expected, filters
+  end
+
+  def test_parse_fq_with_hash_string_args
+    params = {:fq => [{:tags => "ruby"}]}
+    filters = Document.parse_fq(params[:fq])
+
+    expected = ["tags:\"ruby\""]
     assert_equal expected, filters
   end
 

@@ -65,11 +65,19 @@ module Solrsan
           element
         elsif element.is_a?(Hash)
           element.map do |k,values|
-            values.map{|value| "#{k}:\"#{value}\""}
+            if values.is_a?(String)
+              key_value_query(k,values)
+            else
+              values.map{|value| key_value_query(k,value) }
+            end
           end
         else
           raise "fq parameter must be a string or hash"
         end
+      end
+
+      def key_value_query(key, value)
+        "#{key}:\"#{value}\""
       end
 
       def parse_facet_counts(facet_counts)
