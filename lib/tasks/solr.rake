@@ -19,25 +19,31 @@ namespace :solr do
 
   solr_server_dir = "cd #{jetty_path};"
   start_solr_cmd = "java -jar start.jar"
-  solr_params = "jetty.port=#{jetty_port} -Dsolr.solr.home=#{solr_home} -Dsolr.data.dir=#{solr_data_dir}"
+  jetty_port_opt = "jetty.port=#{jetty_port}"
+  solr_params = "#{jetty_port_opt} -Dsolr.solr.home=#{solr_home} -Dsolr.data.dir=#{solr_data_dir}"
 
   desc "Start solr"
   task(:start) do
     # -Dsolr.clustering.enabled=true
+    cmd = kill_matching_process_cmd(jetty_port_opt)
+    stop_exit_status = run_system_command(cmd)
+
+    sleep(1)
+
     cmd = "#{solr_server_dir} #{start_solr_cmd } #{solr_params} &"
     run_system_command(cmd)
   end
 
   desc "Stop solr"
   task(:stop) do
-    cmd = kill_matching_process_cmd(solr_params)
+    cmd = kill_matching_process_cmd(jetty_port_opt)
     run_system_command(cmd)
   end
 
   def run_system_command(cmd)
     puts cmd
     status = system(cmd)
-    exit($?.exitstatus)
+    $?.exitstatus
   end
 
   def kill_matching_process_cmd(process_name)
