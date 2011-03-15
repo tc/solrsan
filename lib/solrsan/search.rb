@@ -37,6 +37,7 @@ module Solrsan
           :q => "*:*",
           :facet => "on",
           :'facet.mincount' => 1}.merge(search_params)
+        solr_params[:hl] = true unless search_params[:'hl.fl'].blank?
         solr_params[:fq] = ["type:#{class_name}"] + parse_fq(search_params[:fq])
         solr_params
       end
@@ -44,6 +45,7 @@ module Solrsan
       def parse_solr_response(solr_response)
         docs = solr_response['response']['docs']
         parsed_facet_counts = parse_facet_counts(solr_response['facet_counts'])
+        highlighting = solr_response['highlighting']
 
         metadata = {
           :total_count => solr_response['response']['numFound'],
@@ -52,7 +54,9 @@ module Solrsan
           :time => solr_response['responseHeader']['QTime'],
           :status => solr_response['responseHeader']['status']
         }
-        {:docs => docs, :metadata =>  metadata, :facet_counts => parsed_facet_counts}
+
+        {:docs => docs, :metadata =>  metadata,
+         :facet_counts => parsed_facet_counts, :highlighting => highlighting}
       end
 
       def parse_fq(fq)

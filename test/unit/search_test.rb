@@ -148,5 +148,16 @@ class SearchTest < Test::Unit::TestCase
     assert_equal({"[1 TO 5]"=>1, "[6 TO 10]"=>1}, facet_counts["facet_queries"]["review_count"])
   end
 
+  def test_highlighting_support
+    Document.index(Document.new(:id => 3, :author => "Bert", :title => "solr lucene",:review_count => 10, :tags => ["solr"]))
+
+    response = Document.search(:q => "solr", 
+                               :'hl.fl' => "*")
+    docs = response[:docs]
+    highlighting = response[:highlighting]
+
+    first_result = highlighting.first
+    assert first_result[1]['tags'].include?("<em>solr</em>")
+  end
 end
 
