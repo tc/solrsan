@@ -61,7 +61,13 @@ module Solrsan
 
       def parse_fq(fq)
         return [] if fq.nil?
-        fq.map{|ele| parse_element_in_fq(ele)}.flatten
+        if fq.is_a?(Hash)
+          fq.map{|k,v| parse_element_in_fq({k => v})}.flatten
+        elsif fq.is_a?(Array)
+          fq.map{|ele| parse_element_in_fq(ele)}.flatten
+        else
+          raise "fq must be a hash or array"
+        end
       end
 
       def parse_element_in_fq(element)
@@ -76,12 +82,16 @@ module Solrsan
             end
           end
         else
-          raise "fq parameter must be a string or hash"
+          raise "each fq parameter must be a string or hash"
         end
       end
 
       def key_value_query(key, value)
-        "#{key}:\"#{value}\""
+        if value.starts_with?("[")
+          "#{key}:#{value}"
+        else
+          "#{key}:\"#{value}\""
+        end
       end
 
       def parse_facet_counts(facet_counts)

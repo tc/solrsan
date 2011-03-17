@@ -77,6 +77,14 @@ class SearchTest < Test::Unit::TestCase
     assert_equal expected, facet_counts['facet_queries']
   end
   
+  def test_parse_fq_with_hash
+    params = {:fq => {:tags => ["ruby", "scala"]}}
+    filters = Document.parse_fq(params[:fq])
+
+    expected = ["tags:\"ruby\"", "tags:\"scala\""]
+    assert_equal expected, filters
+  end
+
   def test_parse_fq_with_hash_array_args
     params = {:fq => [{:tags => ["ruby", "scala"]}]}
     filters = Document.parse_fq(params[:fq])
@@ -135,7 +143,7 @@ class SearchTest < Test::Unit::TestCase
     assert author_facet_entries.keys.include?("Bert") && author_facet_entries.keys.include?("Ernie")
   end
 
-  def test_range_facting
+  def test_range_faceting
     Document.index(Document.new(:id => 3, :author => "Bert", :title => "solr lucene",:review_count => 10))
     Document.index(Document.new(:id => 4, :author => "Ernie", :title => "lucene solr", :review_count => 5))
     
