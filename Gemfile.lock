@@ -1,10 +1,10 @@
 PATH
   remote: .
   specs:
-    solrsan (0.0.18)
-      activemodel (~> 3.0.3)
-      activesupport (~> 3.0.3)
-      rsolr (= 1.0.0)
+    solrsan (0.0.20)
+      activemodel (~> 3.0.5)
+      activesupport (~> 3.0.5)
+      rsolr (~> 1.0.0)
 
 GEM
   remote: http://rubygems.org/

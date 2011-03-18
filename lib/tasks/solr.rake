@@ -1,4 +1,5 @@
 require 'uri'
+require 'yaml'
 
 namespace :solr do
   env =  "development"

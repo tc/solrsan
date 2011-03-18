@@ -1,11 +1,11 @@
-defaults: &defaults
+development: 
   jetty_path: "/usr/local/jetty"
   solr_data_dir: "/tmp/jetty/solr/solrsan-test-index"
   solr_server_url: "http://localhost:9090/solr"
-development:
-  <<: *defaults
 test:
-  <<: *defaults
+  jetty_path: "/usr/local/jetty"
+  solr_data_dir: "/tmp/jetty/solr/solrsan-test-index"
+  solr_server_url: "http://localhost:9090/solr"
 production:
   jetty_path: "/usr/local/jetty"
   solr_data_dir: "/data/solr/search-index"
