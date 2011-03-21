@@ -167,5 +167,14 @@ class SearchTest < Test::Unit::TestCase
     first_result = highlighting.first
     assert first_result[1]['tags'].include?("<em>solr</em>")
   end
+
+  def test_embed_highlighting
+    Document.index(Document.new(:id => 3, :author => "Bert", :title => "solr lucene",:review_count => 10, :tags => ["solr"]))
+
+    response = Document.search(:q => "solr", 
+                               :'hl.fl' => "*")
+    docs = response[:docs]
+    assert docs.first['tags'].include?("<em>solr</em>")
+  end
 end
 

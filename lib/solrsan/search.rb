@@ -54,9 +54,11 @@ module Solrsan
           :time => solr_response['responseHeader']['QTime'],
           :status => solr_response['responseHeader']['status']
         }
-
-        {:docs => docs, :metadata =>  metadata,
+        
+        response = {:docs => docs, :metadata =>  metadata,
          :facet_counts => parsed_facet_counts, :highlighting => highlighting}
+
+        embed_highlighting(response)
       end
 
       def parse_fq(fq)
@@ -128,6 +130,20 @@ module Solrsan
         else
           facet_collection
         end
+      end
+
+      def embed_highlighting(search_response)
+        return search_response unless search_response[:highlighting]
+
+        highlighted_docs = search_response[:docs].map do |doc|
+          hl_metadata = search_response[:highlighting][doc['id']]
+          hl_metadata.each{ |k,v| doc[k] = v } if hl_metadata
+
+          doc
+        end
+
+        search_response[:docs] = highlighted_docs
+        search_response
       end
 
     end
