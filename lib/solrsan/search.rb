@@ -135,6 +135,11 @@ module Solrsan
       def embed_highlighting(search_response)
         return search_response unless search_response[:highlighting]
 
+        #save original pagniate keys
+        per_page = search_response[:docs].per_page
+        start = search_response[:docs].start
+        total = search_response[:docs].total
+
         highlighted_docs = search_response[:docs].map do |doc|
           hl_metadata = search_response[:highlighting][doc['id']]
           hl_metadata.each{ |k,v| doc[k] = v } if hl_metadata
@@ -143,6 +148,12 @@ module Solrsan
         end
 
         search_response[:docs] = highlighted_docs
+
+        search_response[:docs].extend RSolr::Pagination::PaginatedDocSet
+        search_response[:docs].per_page = per_page
+        search_response[:docs].start = start
+        search_response[:docs].total = total
+
         search_response
       end
 
