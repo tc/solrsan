@@ -27,6 +27,23 @@ The generator will copy the following files into your application.
   config/initializers/solrsan.rb
   lib/tasks/solr.rake
 
+The rake file will add
+rake solr:start
+rake solr:stop
+rake solr:clear_index
+rake solr:index
+#you will need to alter clear_index/index to match your models
+
+Deploy tasks via capistrano:
+add to your deploy.rb
+ require 'solrsan/capistrano'
+
+This will add the following methods which will just call the
+corresponding rake tasks:
+cap solr:start
+cap solr:stop
+cap solr:reindex
+
 ##
 The fields are required for each solr document:
 id, db_id, type
