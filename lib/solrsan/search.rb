@@ -135,6 +135,7 @@ module Solrsan
       def embed_highlighting(search_response)
         return search_response unless search_response[:highlighting]
 
+        excluded_highlighting_fields = ['id', 'db_id', 'type']
         #save original pagniate keys
         per_page = search_response[:docs].per_page
         start = search_response[:docs].start
@@ -142,7 +143,7 @@ module Solrsan
 
         highlighted_docs = search_response[:docs].map do |doc|
           hl_metadata = search_response[:highlighting][doc['id']]
-          hl_metadata.each{ |k,v| doc[k] = v } if hl_metadata
+          hl_metadata.each{ |k,v| doc[k] = v unless excluded_highlighting_fields.include?(k)} if hl_metadata
 
           doc
         end
