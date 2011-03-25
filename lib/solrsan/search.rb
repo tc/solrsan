@@ -151,7 +151,7 @@ module Solrsan
           hl_metadata.drop_while{|k,v| excluded_highlighting_fields.include?(k) }.each do |k,v|
             new_value = if doc[k].is_a?(Array)
               matched = v.map{|t| t.gsub(HL_START_TAG,"").gsub(HL_END_TAG,"") }
-              doc[k].drop_while{|text| matched.include?(text) }.concat(v)
+              v.concat(doc[k].drop_while{|text| matched.include?(text) })
             else
               v
             end
