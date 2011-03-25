@@ -165,16 +165,16 @@ class SearchTest < Test::Unit::TestCase
     highlighting = response[:highlighting]
 
     first_result = highlighting.first
-    assert first_result[1]['tags'].include?("<em>solr</em>")
+    assert first_result[1]['tags'].include?("<mark>solr</mark>")
   end
 
   def test_embed_highlighting
-    Document.index(Document.new(:id => 3, :author => "Bert", :title => "solr lucene",:review_count => 10, :tags => ["solr"]))
+    Document.index(Document.new(:id => 3, :author => "Bert", :title => "solr lucene",:review_count => 10, :tags => ["solr", "sphinx"]))
 
     response = Document.search(:q => "solr", 
                                :'hl.fl' => "*")
     docs = response[:docs]
-    assert docs.first['tags'].include?("<em>solr</em>")
+    assert_equal ["sphinx", "<mark>solr</mark>"], docs.first['tags']
   end
 end
 

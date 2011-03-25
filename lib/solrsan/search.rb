@@ -2,6 +2,10 @@ module Solrsan
   module Search
     extend ActiveSupport::Concern
     module ClassMethods
+
+      HL_START_TAG = "<mark>"
+      HL_END_TAG = "</mark>"
+
       def class_name
         to_s.underscore
       end
@@ -143,7 +147,16 @@ module Solrsan
 
         highlighted_docs = search_response[:docs].map do |doc|
           hl_metadata = search_response[:highlighting][doc['id']]
-          hl_metadata.each{ |k,v| doc[k] = v unless excluded_highlighting_fields.include?(k)} if hl_metadata
+
+          hl_metadata.drop_while{|k,v| excluded_highlighting_fields.include?(k) }.each do |k,v|
+            new_value = if v.is_a?(Array)
+              matched = v.map{|t| t.gsub(HL_START_TAG,"").gsub(HL_END_TAG,"") }
+              doc[k].drop_while{|text| matched.include?(text) }.concat(v)
+            else
+              v
+            end
+            doc[k] = new_value
+          end if hl_metadata
 
           doc
         end

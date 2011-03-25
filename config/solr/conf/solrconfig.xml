@@ -410,8 +410,8 @@
    <!-- Configure the standard formatter -->
    <formatter name="html" class="org.apache.solr.highlight.HtmlFormatter" default="true">
     <lst name="defaults">
-     <str name="hl.simple.pre"><![CDATA[<em>]]></str>
-     <str name="hl.simple.post"><![CDATA[</em>]]></str>
+     <str name="hl.simple.pre"><![CDATA[<mark>]]></str>
+     <str name="hl.simple.post"><![CDATA[</mark>]]></str>
     </lst>
    </formatter>
   </highlighting>
