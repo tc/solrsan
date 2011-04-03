@@ -174,7 +174,26 @@ class SearchTest < Test::Unit::TestCase
     response = Document.search(:q => "solr", 
                                :'hl.fl' => "*")
     docs = response[:docs]
-    assert_equal ["sphinx", "<mark>solr</mark>"], docs.first['tags']
+    assert_equal ["<mark>solr</mark>","sphinx"], docs.first['tags']
   end
+
+  def test_debug_response
+    Document.index(@document)
+    q = @document.attributes[:title]
+
+    response = Document.search({:q => q, :debugQuery => true})
+    metadata = response[:metadata]
+    assert_not_nil metadata[:debug]
+  end
+
+  def test_stats_response
+    Document.index(@document)
+    q = @document.attributes[:title]
+
+    response = Document.search({:q => q, :stats => true, :'stats.field' => 'review_count'})
+    assert_not_nil response[:stats]
+    assert_equal 1, response[:stats]['stats_fields']['review_count']['count']
+  end
+
 end
 

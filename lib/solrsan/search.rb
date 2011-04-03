@@ -56,11 +56,13 @@ module Solrsan
           :start => solr_response['response']['start'],
           :rows => solr_response['responseHeader']['params']['rows'],
           :time => solr_response['responseHeader']['QTime'],
-          :status => solr_response['responseHeader']['status']
+          :status => solr_response['responseHeader']['status'],
+          :debug => solr_response['debug']
         }
         
         response = {:docs => docs, :metadata =>  metadata,
          :facet_counts => parsed_facet_counts, :highlighting => highlighting}
+        response[:stats] = solr_response['stats'] if solr_response['stats']
 
         embed_highlighting(response)
       end
