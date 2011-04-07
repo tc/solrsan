@@ -20,6 +20,7 @@ namespace :solr do
 
   solr_server_dir = "cd #{jetty_path};"
   start_solr_cmd = "java -jar start.jar"
+  logging_xml = "etc/jetty-logging.xml"
   jetty_port_opt = "jetty.port=#{jetty_port}"
   solr_params = "#{jetty_port_opt} -Dsolr.solr.home=#{solr_home} -Dsolr.data.dir=#{solr_data_dir}"
 
@@ -31,7 +32,7 @@ namespace :solr do
 
     sleep(1)
 
-    cmd = "#{solr_server_dir} #{start_solr_cmd } #{solr_params} &"
+    cmd = "#{solr_server_dir} #{start_solr_cmd} #{logging_xml} #{solr_params} &"
     run_system_command(cmd)
   end
 
