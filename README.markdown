@@ -7,6 +7,7 @@ It'll be invaluable for knowing parameters and error messages. I made a few test
 
 ## HOWTO
 Install Jetty
+
   wget http://download.eclipse.org/jetty/stable-7/dist/jetty-distribution-7.3.0.v20110203.tar.gz
   tar -zxvf jetty-distribution-*.tar.gz
   rm jetty-distribution-*.tar.gz
@@ -14,6 +15,8 @@ Install Jetty
   ln -s jetty-distribution-* jetty
 
 Install solr
+
+
   wget http://www.ecoficial.com/apachemirror/lucene/solr/1.4.1/apache-solr-1.4.1.tgz
   tar -zxvf apache-solr-*.tgz
   cd apache-solr-*
@@ -23,6 +26,8 @@ Create solr configuration files using:
   rails generate solrsan:config
 
 The generator will copy the following files into your application.
+
+
   config/solr.yml
   config/solr
   config/initializers/solrsan.rb
@@ -31,6 +36,8 @@ The generator will copy the following files into your application.
 Edit the config/solr.yml for your directory paths.
 
 The rake file will add these rake tasks:
+
+
   rake solr:start
   rake solr:stop
   rake solr:clear_index
@@ -40,13 +47,17 @@ you will need to alter clear_index/index to match your models
 
 Deploy tasks via capistrano:
 add to your deploy.rb
+
   require 'solrsan/capistrano'
 
 This will add the following methods which will just call the
 corresponding rake tasks:
+
+
   cap solr:start
   cap solr:stop
   cap solr:reindex
+
 
 ## Indexing documents:
 Edit config/solr/conf/schema.xml to state the types of fields you want
@@ -54,9 +65,11 @@ to index. You can use dynamic fields as well.
 
 These fields are required for each solr document and are automatically
 generated:
-id, db_id, type
+
+  id, db_id, type
 
 In your model, define as_solr_document and return a hash with specific fields.
+
 
   class Document < ActiveRecord::Base
     include Solrsan::Search
@@ -67,6 +80,7 @@ In your model, define as_solr_document and return a hash with specific fields.
       {:content => "hi"}
     end
   end
+
 
 In each model, you can include a Solrsan::Search module which will include a few interface helper methods:
   index
