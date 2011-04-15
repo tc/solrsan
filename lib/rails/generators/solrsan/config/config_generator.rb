@@ -11,17 +11,13 @@ module Solrsan
       end
 
       def copy_solr_conf
-        Dir["config/solr/conf/*"].each do |source|
-          destination = "config/solr/conf/#{File.basename(source)}"
-          FileUtils.rm(destination) if options[:force]
-          if File.exist?(destination)  
-            puts "Skipping #{destination} because it already exists"
-          else
-            puts "Generating #{destination}"
-            FileUtils.cp(source, destination)
-          end
-        end
+        directory "../../../../../../config/solr", "config/solr", :recursive => true
       end
+
+      def copy_rake_task
+        copy_file "../../../../../tasks/solr.rake", "lib/tasks/solr.rake"
+      end
+
     end
   end
 end
