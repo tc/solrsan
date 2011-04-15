@@ -72,7 +72,11 @@ index
 destroy_index_document
 search(params)
 
-Indexing and Searching examples can be seen in test/unit/search_test.rb
+To Search:
+A simple search query:
+Document.search(:q => "hello world")
+
+More searching examples can be seen in test/unit/search_test.rb
 
 ---
 ## Changelog
