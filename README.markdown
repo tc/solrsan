@@ -7,17 +7,17 @@ It'll be invaluable for knowing parameters and error messages. I made a few test
 
 ## HOWTO
 Install Jetty
-wget http://download.eclipse.org/jetty/stable-7/dist/jetty-distribution-7.3.0.v20110203.tar.gz
-tar -zxvf jetty-distribution-*.tar.gz
-rm jetty-distribution-*.tar.gz
-mv jetty-distribution-* /usr/local
-ln -s jetty-distribution-* jetty
+  wget http://download.eclipse.org/jetty/stable-7/dist/jetty-distribution-7.3.0.v20110203.tar.gz
+  tar -zxvf jetty-distribution-*.tar.gz
+  rm jetty-distribution-*.tar.gz
+  mv jetty-distribution-* /usr/local
+  ln -s jetty-distribution-* jetty
 
 Install solr
-wget http://www.ecoficial.com/apachemirror/lucene/solr/1.4.1/apache-solr-1.4.1.tgz
-tar -zxvf apache-solr-*.tgz
-cd apache-solr-*
-cp dist/apache-solr-*.war /usr/local/jetty/webapps/solr.war
+  wget http://www.ecoficial.com/apachemirror/lucene/solr/1.4.1/apache-solr-1.4.1.tgz
+  tar -zxvf apache-solr-*.tgz
+  cd apache-solr-*
+  cp dist/apache-solr-*.war /usr/local/jetty/webapps/solr.war
 
 Create solr configuration files using:
   rails generate solrsan:config
@@ -31,24 +31,24 @@ The generator will copy the following files into your application.
 Edit the config/solr.yml for your directory paths.
 
 The rake file will add these rake tasks:
-rake solr:start
-rake solr:stop
-rake solr:clear_index
-rake solr:index
-#you will need to alter clear_index/index to match your models
+  rake solr:start
+  rake solr:stop
+  rake solr:clear_index
+  rake solr:index
+
+you will need to alter clear_index/index to match your models
 
 Deploy tasks via capistrano:
 add to your deploy.rb
- require 'solrsan/capistrano'
+  require 'solrsan/capistrano'
 
 This will add the following methods which will just call the
 corresponding rake tasks:
-cap solr:start
-cap solr:stop
-cap solr:reindex
+  cap solr:start
+  cap solr:stop
+  cap solr:reindex
 
-##
-To index documents:
+## Indexing documents:
 Edit config/solr/conf/schema.xml to state the types of fields you want
 to index. You can use dynamic fields as well.
 
@@ -57,24 +57,25 @@ generated:
 id, db_id, type
 
 In your model, define as_solr_document and return a hash with specific fields.
-class Document < ActiveRecord::Base
-  include Solrsan::Search
-  after_save :index
-  before_destroy :destroy_index_document
 
-  def as_solr_document
-    {:content => "hi"}
+  class Document < ActiveRecord::Base
+    include Solrsan::Search
+    after_save :index
+    before_destroy :destroy_index_document
+
+    def as_solr_document
+      {:content => "hi"}
+    end
   end
-end
 
 In each model, you can include a Solrsan::Search module which will include a few interface helper methods:
-index
-destroy_index_document
-search(params)
+  index
+  destroy_index_document
+  search(params)
 
-To Search:
+## Search:
 A simple search query:
-Document.search(:q => "hello world")
+  Document.search(:q => "hello world")
 
 More searching examples can be seen in test/unit/search_test.rb
 
