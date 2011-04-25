@@ -26,6 +26,9 @@ Install solr
   cd apache-solr-*
   cp dist/apache-solr-*.war /usr/local/jetty/webapps/solr.war
 
+Add solrsan to your Ruby application's Gemfile:
+  gem "solrsan"
+
 Create solr configuration files using:
   rails generate solrsan:config
 
