@@ -21,7 +21,7 @@ Install Jetty
 Install solr
 
 
-  wget http://www.ecoficial.com/apachemirror/lucene/solr/1.4.1/apache-solr-1.4.1.tgz
+  wget http://www.ecoficial.com/apachemirror/lucene/solr/3.1.0/apache-solr-3.1.0.tgz
   tar -zxvf apache-solr-*.tgz
   cd apache-solr-*
   cp dist/apache-solr-*.war /usr/local/jetty/webapps/solr.war
