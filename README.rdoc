@@ -97,6 +97,8 @@ A simple search query:
 More searching examples can be seen in test/unit/search_test.rb
 
 == Changelog
+0.0.32
+Using Hashwithindifferentaccess for request parsing.
 
 0.0.31
 Usable version!

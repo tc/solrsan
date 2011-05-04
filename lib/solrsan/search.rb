@@ -37,10 +37,10 @@ module Solrsan
       end
 
       def parse_params_for_solr(search_params={})
-        solr_params = { :echoParams => 'explicit',
+        solr_params = HashWithIndifferentAccess.new({ :echoParams => 'explicit',
           :q => "*:*",
           :facet => "on",
-          :'facet.mincount' => 1}.merge(search_params)
+          :'facet.mincount' => 1}.merge(search_params))
         solr_params[:hl] = true unless search_params[:'hl.fl'].blank?
         solr_params[:fq] = ["type:#{class_name}"] + parse_fq(search_params[:fq])
         solr_params

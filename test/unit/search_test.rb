@@ -85,6 +85,14 @@ class SearchTest < Test::Unit::TestCase
     assert_equal expected, filters
   end
 
+  def test_parse_fq_with_hash_multiple_entries
+    params = {:fq => {:tags => ["ruby", "scala"], :author => "Bert"}}
+    filters = Document.parse_fq(params[:fq])
+
+    expected = ["tags:\"ruby\"", "tags:\"scala\"", "author:\"Bert\""]
+    assert_equal expected, filters
+  end
+
   def test_parse_fq_with_hash_array_args
     params = {:fq => [{:tags => ["ruby", "scala"]}]}
     filters = Document.parse_fq(params[:fq])
@@ -113,6 +121,22 @@ class SearchTest < Test::Unit::TestCase
     filters = Document.parse_fq([])
     expected = []
     assert_equal expected, filters
+  end
+
+
+  def test_filter_query_mulitple_filters
+    Document.index(Document.new(:id => 3, :author => "Bert", :title => "solr lucene",:review_count => 10, :tags => ['ruby']))
+    Document.index(Document.new(:id => 4, :author => "Ernie", :title => "lucene solr", :review_count => 5, :tags => ['ruby', 'scala']))
+    
+    response = Document.search(:q => "solr", :fq => {:tags => ["scala"], :author => "Ernie"})
+    docs = response[:docs]
+    metadata = response[:metadata]
+
+    assert_equal 1, metadata[:total_count]
+
+    doc = docs.first
+    assert_not_nil doc['tags']
+    assert doc['tags'].include?("scala")
   end
 
   def test_filter_query
