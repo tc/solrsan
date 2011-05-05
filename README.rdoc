@@ -97,6 +97,9 @@ A simple search query:
 More searching examples can be seen in test/unit/search_test.rb
 
 == Changelog
+0.0.33
+Reverted Hashwithindifferentaccess for request parsing, buggy with will_paginate.
+
 0.0.32
 Using Hashwithindifferentaccess for request parsing.
 
