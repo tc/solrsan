@@ -219,5 +219,15 @@ class SearchTest < Test::Unit::TestCase
     assert_equal 1, response[:stats]['stats_fields']['review_count']['count']
   end
 
+  def test_will_paginate_support
+    Document.index(Document.new(:id => 3, :author => "Bert", :title => "solr lucene",:review_count => 10))
+    Document.index(Document.new(:id => 4, :author => "Ernie", :title => "lucene solr", :review_count => 5))
+    
+    response = Document.search(:q => "solr")
+    docs = response[:docs]
+    assert_not_nil docs.start
+    assert_not_nil docs.per_page
+    assert_not_nil docs.current_page
+  end
 end
 
