@@ -10,7 +10,7 @@ namespace :solr do
     base_dir = Rails.root
   end
 
-  solr_config = YAML::load( File.open( File.join(base_dir, "config", "solr.yml") ) )
+  solr_config = YAML::load(ERB.new(IO.read(File.join(base_dir, 'config', 'solr.yml'))).result)
   solr_home = File.join(base_dir, "config", "solr")
   solr_data_dir = solr_config[env]['solr_data_dir']
   solr_server_url = solr_config[env]['solr_server_url']
