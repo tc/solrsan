@@ -10,7 +10,7 @@ namespace :solr do
     base_dir = Rails.root
   end
 
-  solr_config = YAML::load( File.open( File.join(base_dir, "config", "solr.yml") ) )
+  solr_config = YAML::load(ERB.new(IO.read(File.join(base_dir, 'config', 'solr.yml'))).result)
   solr_home = File.join(base_dir, "config", "solr")
   solr_data_dir = solr_config[env]['solr_data_dir']
   solr_server_url = solr_config[env]['solr_server_url']
@@ -18,11 +18,11 @@ namespace :solr do
   jetty_port = URI.parse(solr_server_url).port
   jetty_path = solr_config[env]['jetty_path']
 
-  solr_server_dir = "cd #{jetty_path};"
+  solr_server_dir = "cd \"#{jetty_path}\";"
   start_solr_cmd = "java -jar start.jar"
   logging_xml = "etc/jetty-logging.xml"
   jetty_port_opt = "jetty.port=#{jetty_port}"
-  solr_params = "#{jetty_port_opt} -Dsolr.solr.home=#{solr_home} -Dsolr.data.dir=#{solr_data_dir}"
+  solr_params = "#{jetty_port_opt} -Dsolr.solr.home=\"#{solr_home}\" -Dsolr.data.dir=\"#{solr_data_dir}\""
 
   desc "Start solr"
   task(:start) do
