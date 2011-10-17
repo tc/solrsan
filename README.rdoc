@@ -11,20 +11,19 @@ I made a few test cases for further examples at http://github.com/tc/solrsan/tre
 
 === HOWTO
 Install Jetty
-
-  wget http://download.eclipse.org/jetty/stable-7/dist/jetty-distribution-7.3.0.v20110203.tar.gz
+  wget http://download.eclipse.org/jetty/stable-7/dist/jetty-distribution-7.5.3.v20111011.tar.gz
   tar -zxvf jetty-distribution-*.tar.gz
   rm jetty-distribution-*.tar.gz
-  mv jetty-distribution-* /usr/local
-  ln -s jetty-distribution-* jetty
+  sudo mv jetty-distribution-* /usr/local
+  cd /usr/local
+  sudo ln -s jetty-distribution-* jetty
 
 Install solr
 
-
-  wget http://www.ecoficial.com/apachemirror/lucene/solr/3.1.0/apache-solr-3.1.0.tgz
+  wget http://www.ecoficial.com/apachemirror/lucene/solr/3.4.0/apache-solr-3.4.0.tgz
   tar -zxvf apache-solr-*.tgz
   cd apache-solr-*
-  cp dist/apache-solr-*.war /usr/local/jetty/webapps/solr.war
+  sudo cp dist/apache-solr-*.war /usr/local/jetty/webapps/solr.war
 
 Add solrsan to your Ruby application's Gemfile:
   gem "solrsan"
