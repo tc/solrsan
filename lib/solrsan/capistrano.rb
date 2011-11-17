@@ -2,6 +2,11 @@
 
 Capistrano::Configuration.instance(:must_exist).load do
   namespace :solr do
+    desc "setup"
+    task :setup, :roles => :search do
+      run "cd #{current_path} && rake solr:setup RAILS_ENV=#{stage}"
+    end
+
     desc "starts solr"
     task :start, :roles => :search do
       run "cd #{current_path} && rake solr:start RAILS_ENV=#{stage}"

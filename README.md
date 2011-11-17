@@ -13,7 +13,7 @@ I made a few test cases for further examples at http://github.com/tc/solrsan/tre
 Install Jetty
 
 ```
-  wget http://download.eclipse.org/jetty/stable-7/dist/jetty-distribution-7.5.3.v20111011.tar.gz
+  wget http://download.eclipse.org/jetty/7.5.4.v20111024/dist/jetty-distribution-7.5.4.v20111024.tar.gz"
   tar -zxvf jetty-distribution-*.tar.gz
   rm jetty-distribution-*.tar.gz
   sudo mv jetty-distribution-* /usr/local
@@ -113,7 +113,7 @@ In each model, you can include a Solrsan::Search module which will include a few
   search(params)
 ```
 
-=== Search:
+## Search:
 A simple search query:
 
 ```
@@ -123,6 +123,8 @@ A simple search query:
 More searching examples can be seen in test/unit/search_test.rb
 
 ## Changelog
+0.5.1 (unreleased)
+Added solr:setup rake/cap task
 
 0.5.0
 Updated gems to rsolr 1.0.3/rails 3.1.1

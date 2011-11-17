@@ -25,8 +25,22 @@ namespace :solr do
   jetty_port_opt = "jetty.port=#{jetty_port}"
   solr_params = "#{jetty_port_opt} -Dsolr.solr.home=\"#{solr_home}\" -Dsolr.data.dir=\"#{solr_data_dir}\""
 
+  desc "Install solr"
+  task :setup do
+    run_system_command "http://download.eclipse.org/jetty/7.5.4.v20111024/dist/jetty-distribution-7.5.4.v20111024.tar.gz"
+    run_system_command "tar -zxvf jetty-distribution-*.tar.gz"
+    run_system_command "rm jetty-distribution-*.tar.gz"
+    run_system_command "sudo mv jetty-distribution-* /usr/local"
+    run_system_command "sudo ln -s /usr/local/jetty-distribution-* #{jetty_path}"
+
+    run_system_command "wget http://www.ecoficial.com/apachemirror/lucene/solr/3.4.0/apache-solr-3.4.0.tgz"
+    run_system_command "tar -zxvf apache-solr-*.tgz"
+    run_system_command "cd apache-solr-*"
+    run_system_command "sudo cp dist/apache-solr-*.war #{jetty_path}/webapps/solr.war"
+  end
+
   desc "Start solr"
-  task(:start) do
+  task :start do
     # -Dsolr.clustering.enabled=true
     cmd = kill_matching_process_cmd(jetty_port_opt)
     stop_exit_status = run_system_command(cmd)
@@ -38,7 +52,7 @@ namespace :solr do
   end
 
   desc "Stop solr"
-  task(:stop) do
+  task :stop do
     cmd = kill_matching_process_cmd(jetty_port_opt)
     run_system_command(cmd)
   end
