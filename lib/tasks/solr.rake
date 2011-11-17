@@ -1,4 +1,5 @@
 require 'uri'
+require 'erb'
 require 'yaml'
 
 namespace :solr do
