@@ -30,7 +30,7 @@ module Solrsan
         rescue RSolr::Error::Http => e
           {:docs => [], 
            :metadata => 
-            {:error => {:http_status_code => e.response[:status], 
+            {:error => {:http_status_code => e.response[:status],
                         :http_message_status => RSolr::Error::Http::STATUS_CODES[e.response[:status].to_i],
                         :full_message => e.message}}}
         end
@@ -165,11 +165,6 @@ module Solrsan
         end
 
         search_response[:docs] = highlighted_docs
-
-        search_response[:docs].extend RSolr::Pagination::PaginatedDocSet
-        search_response[:docs].per_page = per_page
-        search_response[:docs].start = start
-        search_response[:docs].total = total
 
         search_response
       end
