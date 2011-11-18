@@ -37,6 +37,7 @@ namespace :solr do
     run_system_command "tar -zxvf apache-solr-*.tgz"
     run_system_command "sudo cp apache-solr-*/dist/apache-solr-*.war #{jetty_path}/webapps/solr.war"
     run_system_command "sudo mkdir -p #{solr_data_dir}"
+    run_system_command "sudo chown $USER #{solr_data_dir}"
   end
 
   desc "Start solr"
