@@ -123,7 +123,7 @@ A simple search query:
 More searching examples can be seen in test/unit/search_test.rb
 
 ## Changelog
-0.5.1 (unreleased)
+0.5.1
 Added solr:setup rake/cap task
 
 0.5.0
