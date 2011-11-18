@@ -27,7 +27,7 @@ namespace :solr do
 
   desc "Install solr"
   task :setup do
-    run_system_command "http://download.eclipse.org/jetty/7.5.4.v20111024/dist/jetty-distribution-7.5.4.v20111024.tar.gz"
+    run_system_command "wget http://download.eclipse.org/jetty/7.5.4.v20111024/dist/jetty-distribution-7.5.4.v20111024.tar.gz"
     run_system_command "tar -zxvf jetty-distribution-*.tar.gz"
     run_system_command "rm jetty-distribution-*.tar.gz"
     run_system_command "sudo mv jetty-distribution-* /usr/local"
@@ -35,8 +35,8 @@ namespace :solr do
 
     run_system_command "wget http://www.ecoficial.com/apachemirror/lucene/solr/3.4.0/apache-solr-3.4.0.tgz"
     run_system_command "tar -zxvf apache-solr-*.tgz"
-    run_system_command "cd apache-solr-*"
-    run_system_command "sudo cp dist/apache-solr-*.war #{jetty_path}/webapps/solr.war"
+    run_system_command "sudo cp apache-solr-*/dist/apache-solr-*.war #{jetty_path}/webapps/solr.war"
+    run_system_command "sudo mkdir -p #{solr_data_dir}"
   end
 
   desc "Start solr"
