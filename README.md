@@ -24,7 +24,7 @@ Install Jetty
 Install solr
 
 ```
-  wget http://www.ecoficial.com/apachemirror/lucene/solr/3.4.0/apache-solr-3.4.0.tgz
+  wget http://www.ecoficial.com/apachemirror/lucene/solr/3.4.0/apache-solr-3.5.0.tgz
   tar -zxvf apache-solr-*.tgz
   cd apache-solr-*
   sudo cp dist/apache-solr-*.war /usr/local/jetty/webapps/solr.war
@@ -96,7 +96,7 @@ In your model, define as_solr_document and return a hash with specific fields.
 ```
   class Document < ActiveRecord::Base
     include Solrsan::Search
-    after_save :index
+    after_save :solr_index
     before_destroy :destroy_index_document
 
     def as_solr_document
@@ -108,7 +108,7 @@ In your model, define as_solr_document and return a hash with specific fields.
 In each model, you can include a Solrsan::Search module which will include a few interface helper methods:
 
 ```
-  index
+  solr_index
   destroy_index_document
   search(params)
 ```
@@ -123,6 +123,9 @@ A simple search query:
 More searching examples can be seen in test/unit/search_test.rb
 
 ## Changelog
+0.5.2
+Renamed index to solr_index to avoid naming conflict with mongoid.
+
 0.5.1
 Added solr:setup rake/cap task
 

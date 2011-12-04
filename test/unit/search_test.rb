@@ -14,7 +14,7 @@ class SearchTest < Test::Unit::TestCase
   end
 
   def test_simple_query
-    Document.index(@document)
+    Document.solr_index(@document)
     q = @document.attributes[:title]
 
     response = Document.search(:q => q)
@@ -24,8 +24,8 @@ class SearchTest < Test::Unit::TestCase
   end
 
   def test_sort
-    Document.index(Document.new(:id => 3, :title => "solar city",:review_count => 10))
-    Document.index(Document.new(:id => 4, :title => "city solar", :review_count => 5))
+    Document.solr_index(Document.new(:id => 3, :title => "solar city",:review_count => 10))
+    Document.solr_index(Document.new(:id => 4, :title => "city solar", :review_count => 5))
 
     q = "solar"
     response = Document.search(:q => q, :sort => "review_count asc")
@@ -125,8 +125,8 @@ class SearchTest < Test::Unit::TestCase
 
 
   def test_filter_query_mulitple_filters
-    Document.index(Document.new(:id => 3, :author => "Bert", :title => "solr lucene",:review_count => 10, :tags => ['ruby']))
-    Document.index(Document.new(:id => 4, :author => "Ernie", :title => "lucene solr", :review_count => 5, :tags => ['ruby', 'scala']))
+    Document.solr_index(Document.new(:id => 3, :author => "Bert", :title => "solr lucene",:review_count => 10, :tags => ['ruby']))
+    Document.solr_index(Document.new(:id => 4, :author => "Ernie", :title => "lucene solr", :review_count => 5, :tags => ['ruby', 'scala']))
     
     response = Document.search(:q => "solr", :fq => {:tags => ["scala"], :author => "Ernie"})
     docs = response[:docs]
@@ -140,8 +140,8 @@ class SearchTest < Test::Unit::TestCase
   end
 
   def test_filter_query
-    Document.index(Document.new(:id => 3, :author => "Bert", :title => "solr lucene",:review_count => 10, :tags => ['ruby']))
-    Document.index(Document.new(:id => 4, :author => "Ernie", :title => "lucene solr", :review_count => 5, :tags => ['ruby', 'scala']))
+    Document.solr_index(Document.new(:id => 3, :author => "Bert", :title => "solr lucene",:review_count => 10, :tags => ['ruby']))
+    Document.solr_index(Document.new(:id => 4, :author => "Ernie", :title => "lucene solr", :review_count => 5, :tags => ['ruby', 'scala']))
     
     response = Document.search(:q => "solr", :fq => [{:tags => ["scala"]}])
     docs = response[:docs]
@@ -155,8 +155,8 @@ class SearchTest < Test::Unit::TestCase
   end
 
   def test_text_faceting
-    Document.index(Document.new(:id => 3, :author => "Bert", :title => "solr lucene",:review_count => 10))
-    Document.index(Document.new(:id => 4, :author => "Ernie", :title => "lucene solr", :review_count => 5))
+    Document.solr_index(Document.new(:id => 3, :author => "Bert", :title => "solr lucene",:review_count => 10))
+    Document.solr_index(Document.new(:id => 4, :author => "Ernie", :title => "lucene solr", :review_count => 5))
     
     response = Document.search(:q => "solr", :'facet.field' => ['author'])
     docs = response[:docs]
@@ -168,8 +168,8 @@ class SearchTest < Test::Unit::TestCase
   end
 
   def test_range_faceting
-    Document.index(Document.new(:id => 3, :author => "Bert", :title => "solr lucene",:review_count => 10))
-    Document.index(Document.new(:id => 4, :author => "Ernie", :title => "lucene solr", :review_count => 5))
+    Document.solr_index(Document.new(:id => 3, :author => "Bert", :title => "solr lucene",:review_count => 10))
+    Document.solr_index(Document.new(:id => 4, :author => "Ernie", :title => "lucene solr", :review_count => 5))
     
     response = Document.search(:q => "solr", :'facet.field' => ['author'], :'facet.query' => ["review_count:[1 TO 5]", "review_count:[6 TO 10]"])
     docs = response[:docs]
@@ -181,7 +181,7 @@ class SearchTest < Test::Unit::TestCase
   end
 
   def test_highlighting_support
-    Document.index(Document.new(:id => 3, :author => "Bert", :title => "solr lucene",:review_count => 10, :tags => ["solr"]))
+    Document.solr_index(Document.new(:id => 3, :author => "Bert", :title => "solr lucene",:review_count => 10, :tags => ["solr"]))
 
     response = Document.search(:q => "solr", 
                                :'hl.fl' => "*")
@@ -193,7 +193,7 @@ class SearchTest < Test::Unit::TestCase
   end
 
   def test_embed_highlighting
-    Document.index(Document.new(:id => 3, :author => "Bert", :title => "solr lucene",:review_count => 10, :tags => ["solr", "sphinx"]))
+    Document.solr_index(Document.new(:id => 3, :author => "Bert", :title => "solr lucene",:review_count => 10, :tags => ["solr", "sphinx"]))
 
     response = Document.search(:q => "solr", 
                                :'hl.fl' => "*")
@@ -202,7 +202,7 @@ class SearchTest < Test::Unit::TestCase
   end
 
   def test_debug_response
-    Document.index(@document)
+    Document.solr_index(@document)
     q = @document.attributes[:title]
 
     response = Document.search({:q => q, :debugQuery => true})
@@ -211,7 +211,7 @@ class SearchTest < Test::Unit::TestCase
   end
 
   def test_stats_response
-    Document.index(@document)
+    Document.solr_index(@document)
     q = @document.attributes[:title]
 
     response = Document.search({:q => q, :stats => true, :'stats.field' => 'review_count'})
@@ -220,8 +220,8 @@ class SearchTest < Test::Unit::TestCase
   end
 
   def test_will_paginate_support
-    Document.index(Document.new(:id => 3, :author => "Bert", :title => "solr lucene",:review_count => 10))
-    Document.index(Document.new(:id => 4, :author => "Ernie", :title => "lucene solr", :review_count => 5))
+    Document.solr_index(Document.new(:id => 3, :author => "Bert", :title => "solr lucene",:review_count => 10))
+    Document.solr_index(Document.new(:id => 4, :author => "Ernie", :title => "lucene solr", :review_count => 5))
     
     response = Document.search(:q => "solr")
     docs = response[:docs]

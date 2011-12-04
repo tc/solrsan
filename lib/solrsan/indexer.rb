@@ -22,8 +22,8 @@ module Solrsan
         doc.merge(converted_fields)
       end
 
-      def index
-        self.class.index(self)
+      def solr_index
+        self.class.solr_index(self)
       end
 
       def destroy_index_document
@@ -43,7 +43,7 @@ module Solrsan
     end
 
     module ClassMethods
-      def index(doc)
+      def solr_index(doc)
         solr_docs = []
         if doc.respond_to?(:map)
           solr_docs = doc.map{|document| document.indexed_fields }
