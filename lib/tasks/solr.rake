@@ -23,17 +23,18 @@ namespace :solr do
   start_solr_cmd = "java -jar start.jar"
   logging_xml = "etc/jetty-logging.xml"
   jetty_port_opt = "jetty.port=#{jetty_port}"
+  jetty_version = "7.6.0.RC4"
   solr_params = "#{jetty_port_opt} -Dsolr.solr.home=\"#{solr_home}\" -Dsolr.data.dir=\"#{solr_data_dir}\""
 
   desc "Install solr"
   task :setup do
-    run_system_command "wget http://download.eclipse.org/jetty/7.5.4.v20111024/dist/jetty-distribution-7.5.4.v20111024.tar.gz"
+    run_system_command "wget http://download.eclipse.org/jetty/#{jetty_version}/dist/jetty-distribution-#{jetty_version}.tar.gz"
     run_system_command "tar -zxvf jetty-distribution-*.tar.gz"
     run_system_command "rm jetty-distribution-*.tar.gz"
     run_system_command "sudo mv jetty-distribution-* /usr/local"
     run_system_command "sudo ln -s /usr/local/jetty-distribution-* #{jetty_path}"
 
-    run_system_command "wget http://www.ecoficial.com/apachemirror/lucene/solr/3.4.0/apache-solr-3.4.0.tgz"
+    run_system_command "wget http://www.ecoficial.com/apachemirror/lucene/solr/3.5.0/apache-solr-3.5.0.tgz"
     run_system_command "tar -zxvf apache-solr-*.tgz"
     run_system_command "sudo cp apache-solr-*/dist/apache-solr-*.war #{jetty_path}/webapps/solr.war"
     run_system_command "sudo mkdir -p #{solr_data_dir}"
