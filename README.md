@@ -10,25 +10,12 @@ It'll be invaluable for knowing parameters and error messages.
 I made a few test cases for further examples at http://github.com/tc/solrsan/tree/master/test/unit
 
 ## HOWTO
-Install Jetty
+Install Jetty/solr
 
 ```
-  wget http://download.eclipse.org/jetty/7.5.4.v20111024/dist/jetty-distribution-7.5.4.v20111024.tar.gz"
-  tar -zxvf jetty-distribution-*.tar.gz
-  rm jetty-distribution-*.tar.gz
-  sudo mv jetty-distribution-* /usr/local
-  cd /usr/local
-  sudo ln -s jetty-distribution-* jetty
+rake solr:setup
 ```
-
-Install solr
-
-```
-  wget http://www.ecoficial.com/apachemirror/lucene/solr/3.4.0/apache-solr-3.5.0.tgz
-  tar -zxvf apache-solr-*.tgz
-  cd apache-solr-*
-  sudo cp dist/apache-solr-*.war /usr/local/jetty/webapps/solr.war
-```
+See lib/tasks/solr.rake
 
 Add solrsan to your Ruby application's Gemfile:
 
