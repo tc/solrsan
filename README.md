@@ -123,6 +123,10 @@ A simple search query:
 More searching examples can be seen in test/unit/search_test.rb
 
 ## Changelog
+0.5.4
+Added a opts param with a default commitWithin of 10ms. Upgraded jetty
+version.
+
 0.5.2
 Renamed index to solr_index to avoid naming conflict with mongoid.
 
