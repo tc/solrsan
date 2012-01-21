@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.summary = %q{Lightweight wrapper for using Apache Solr within a Ruby application including Rails and Sinatra.}
   s.description = %q{solrsan is a lightweight wrapper for using Apache Solr within a Ruby application including Rails and Sinatra.}
 
-  s.add_dependency('rsolr', '~>1.0.3')
+  s.add_dependency('rsolr', '~>1.0.4')
   s.add_dependency('activemodel', '~>3.1.1')
   s.add_dependency('activesupport', '~>3.1.1')
 

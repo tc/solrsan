@@ -22,8 +22,8 @@ module Solrsan
         doc.merge(converted_fields)
       end
 
-      def solr_index
-        self.class.solr_index(self)
+      def solr_index(opts={:add_attributes => {:commitWithin => 10}})
+        self.class.solr_index(self, opts)
       end
 
       def destroy_index_document
@@ -43,7 +43,7 @@ module Solrsan
     end
 
     module ClassMethods
-      def solr_index(doc)
+      def solr_index(doc, opts={:add_attributes => {:commitWithin => 10}})
         solr_docs = []
         if doc.respond_to?(:map)
           solr_docs = doc.map{|document| document.indexed_fields }
@@ -52,8 +52,9 @@ module Solrsan
         else
           raise "Indexed document must define a as_solr_document method."
         end
+
         self.perform_solr_command do |rsolr|
-          rsolr.add(solr_docs)
+          rsolr.add(solr_docs, opts)
         end
       end
 
