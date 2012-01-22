@@ -11,7 +11,7 @@ module Solrsan
       end
         
       def perform_solr_command
-        @rsolr = Solrsan::Config.instance.rsolr_object
+        @rsolr ||= Solrsan::Config.instance.rsolr_object
         yield(@rsolr)
         @rsolr.commit
       end

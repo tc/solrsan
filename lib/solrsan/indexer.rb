@@ -53,7 +53,8 @@ module Solrsan
           raise "Indexed document must define a as_solr_document method."
         end
 
-        rsolr.add(solr_docs, opts)
+        @rsolr ||= Solrsan::Config.instance.rsolr_object
+        @rsolr.add(solr_docs, opts)
       end
 
       def index_all
