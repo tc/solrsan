@@ -110,6 +110,10 @@ A simple search query:
 More searching examples can be seen in test/unit/search_test.rb
 
 ## Changelog
+0.5.6
+Tests use sleep since test index are using commitWithin. Fixed rsolr
+reference.
+
 0.5.5
 Fixed usage of commitWithin.
 
