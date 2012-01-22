@@ -15,6 +15,7 @@ class SearchTest < Test::Unit::TestCase
 
   def test_simple_query
     Document.solr_index(@document)
+    sleep 1
     q = @document.attributes[:title]
 
     response = Document.search(:q => q)
@@ -26,6 +27,7 @@ class SearchTest < Test::Unit::TestCase
   def test_sort
     Document.solr_index(Document.new(:id => 3, :title => "solar city",:review_count => 10))
     Document.solr_index(Document.new(:id => 4, :title => "city solar", :review_count => 5))
+    sleep 1
 
     q = "solar"
     response = Document.search(:q => q, :sort => "review_count asc")
@@ -127,7 +129,8 @@ class SearchTest < Test::Unit::TestCase
   def test_filter_query_mulitple_filters
     Document.solr_index(Document.new(:id => 3, :author => "Bert", :title => "solr lucene",:review_count => 10, :tags => ['ruby']))
     Document.solr_index(Document.new(:id => 4, :author => "Ernie", :title => "lucene solr", :review_count => 5, :tags => ['ruby', 'scala']))
-    
+    sleep 1
+
     response = Document.search(:q => "solr", :fq => {:tags => ["scala"], :author => "Ernie"})
     docs = response[:docs]
     metadata = response[:metadata]
@@ -142,6 +145,7 @@ class SearchTest < Test::Unit::TestCase
   def test_filter_query
     Document.solr_index(Document.new(:id => 3, :author => "Bert", :title => "solr lucene",:review_count => 10, :tags => ['ruby']))
     Document.solr_index(Document.new(:id => 4, :author => "Ernie", :title => "lucene solr", :review_count => 5, :tags => ['ruby', 'scala']))
+    sleep 1
     
     response = Document.search(:q => "solr", :fq => [{:tags => ["scala"]}])
     docs = response[:docs]
@@ -157,6 +161,7 @@ class SearchTest < Test::Unit::TestCase
   def test_text_faceting
     Document.solr_index(Document.new(:id => 3, :author => "Bert", :title => "solr lucene",:review_count => 10))
     Document.solr_index(Document.new(:id => 4, :author => "Ernie", :title => "lucene solr", :review_count => 5))
+    sleep 1
     
     response = Document.search(:q => "solr", :'facet.field' => ['author'])
     docs = response[:docs]
@@ -170,7 +175,8 @@ class SearchTest < Test::Unit::TestCase
   def test_range_faceting
     Document.solr_index(Document.new(:id => 3, :author => "Bert", :title => "solr lucene",:review_count => 10))
     Document.solr_index(Document.new(:id => 4, :author => "Ernie", :title => "lucene solr", :review_count => 5))
-    
+    sleep 1
+
     response = Document.search(:q => "solr", :'facet.field' => ['author'], :'facet.query' => ["review_count:[1 TO 5]", "review_count:[6 TO 10]"])
     docs = response[:docs]
     facet_counts = response[:facet_counts]
@@ -182,6 +188,7 @@ class SearchTest < Test::Unit::TestCase
 
   def test_highlighting_support
     Document.solr_index(Document.new(:id => 3, :author => "Bert", :title => "solr lucene",:review_count => 10, :tags => ["solr"]))
+    sleep 1
 
     response = Document.search(:q => "solr", 
                                :'hl.fl' => "*")
@@ -189,20 +196,24 @@ class SearchTest < Test::Unit::TestCase
     highlighting = response[:highlighting]
 
     first_result = highlighting.first
+    assert_not_nil first_result
     assert first_result[1]['tags'].include?("<mark>solr</mark>")
   end
 
   def test_embed_highlighting
     Document.solr_index(Document.new(:id => 3, :author => "Bert", :title => "solr lucene",:review_count => 10, :tags => ["solr", "sphinx"]))
+    sleep 1
 
     response = Document.search(:q => "solr", 
                                :'hl.fl' => "*")
     docs = response[:docs]
+    assert_not_nil docs.first
     assert_equal ["<mark>solr</mark>","sphinx"], docs.first['tags']
   end
 
   def test_debug_response
     Document.solr_index(@document)
+    sleep 1
     q = @document.attributes[:title]
 
     response = Document.search({:q => q, :debugQuery => true})
@@ -212,16 +223,19 @@ class SearchTest < Test::Unit::TestCase
 
   def test_stats_response
     Document.solr_index(@document)
+    sleep 1
     q = @document.attributes[:title]
 
     response = Document.search({:q => q, :stats => true, :'stats.field' => 'review_count'})
     assert_not_nil response[:stats]
+    assert_not_nil response[:stats]['stats_fields']['review_count']
     assert_equal 1, response[:stats]['stats_fields']['review_count']['count']
   end
 
   def test_will_paginate_support
     Document.solr_index(Document.new(:id => 3, :author => "Bert", :title => "solr lucene",:review_count => 10))
     Document.solr_index(Document.new(:id => 4, :author => "Ernie", :title => "lucene solr", :review_count => 5))
+    sleep 1
     
     response = Document.search(:q => "solr")
     docs = response[:docs]
