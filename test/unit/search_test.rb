@@ -244,4 +244,3 @@ class SearchTest < Test::Unit::TestCase
     assert_not_nil docs.current_page
   end
 end
-

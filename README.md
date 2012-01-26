@@ -110,6 +110,9 @@ A simple search query:
 More searching examples can be seen in test/unit/search_test.rb
 
 ## Changelog
+0.5.7
+Allow solr attribute field 'type' to be overridden.
+
 0.5.6
 Tests use sleep since test index are using commitWithin. Fixed rsolr
 reference.

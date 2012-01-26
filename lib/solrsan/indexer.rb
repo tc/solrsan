@@ -10,7 +10,7 @@ module Solrsan
       def indexed_fields
         raise "Object has have a valid as_solr_document defined" if as_solr_document.nil?
 
-        doc = {:type => self.class.class_name, :db_id => id_value, :id => solr_id_value}
+        doc = {:type => self.class.solr_type, :db_id => id_value, :id => solr_id_value}
 
         initial_document_fields = as_solr_document.reject{|k,v| k == :id || k == :_id}
         converted_fields = initial_document_fields.reduce({}) do |acc, tuple|
@@ -37,7 +37,7 @@ module Solrsan
       end
 
       def solr_id_value
-        "#{self.class.class_name}-#{id_value.to_s}"
+        "#{self.class.solr_type}-#{id_value.to_s}"
       end
 
     end
@@ -75,7 +75,7 @@ module Solrsan
 
       def destroy_all_index_documents!
         self.perform_solr_command do |rsolr|
-          rsolr.delete_by_query("type:#{class_name}")
+          rsolr.delete_by_query("type:#{self.solr_type}")
         end
       end
     end
