@@ -2,44 +2,41 @@ module Solrsan
   module Search
     extend ActiveSupport::Concern
 
-    module InstanceMethods
-      def as_solr_document
-         self.attributes
+    def as_solr_document
+       self.attributes
+    end
+
+    def indexed_fields
+      raise "Object has have a valid as_solr_document defined" if as_solr_document.nil?
+
+      doc = {:type => self.class.solr_type, :db_id => id_value, :id => solr_id_value}
+
+      initial_document_fields = as_solr_document.reject{|k,v| k == :id || k == :_id}
+      converted_fields = initial_document_fields.reduce({}) do |acc, tuple|
+        value = tuple[1]
+        value = value.to_time.utc.xmlschema if value.respond_to?(:utc) || value.is_a?(Date)
+        acc[tuple[0]] = value
+        acc 
       end
+      doc.merge(converted_fields)
+    end
 
-      def indexed_fields
-        raise "Object has have a valid as_solr_document defined" if as_solr_document.nil?
+    def solr_index(opts={:add_attributes => {:commitWithin => 10}})
+      self.class.solr_index(self, opts)
+    end
 
-        doc = {:type => self.class.solr_type, :db_id => id_value, :id => solr_id_value}
+    def destroy_index_document
+      self.class.destroy_index_document(self)
+    end
 
-        initial_document_fields = as_solr_document.reject{|k,v| k == :id || k == :_id}
-        converted_fields = initial_document_fields.reduce({}) do |acc, tuple|
-          value = tuple[1]
-          value = value.to_time.utc.xmlschema if value.respond_to?(:utc) || value.is_a?(Date)
-          acc[tuple[0]] = value
-          acc 
-        end
-        doc.merge(converted_fields)
-      end
+    def id_value
+      item_id = self.attributes[:_id] || self.attributes[:id] || self.id
+      raise "Object must have an id attribute defined before being indexed" if item_id.nil?
+      item_id
+    end
 
-      def solr_index(opts={:add_attributes => {:commitWithin => 10}})
-        self.class.solr_index(self, opts)
-      end
-
-      def destroy_index_document
-        self.class.destroy_index_document(self)
-      end
-
-      def id_value
-        item_id = self.attributes[:_id] || self.attributes[:id] || self.id
-        raise "Object must have an id attribute defined before being indexed" if item_id.nil?
-        item_id
-      end
-
-      def solr_id_value
-        "#{self.class.solr_type}-#{id_value.to_s}"
-      end
-
+    def solr_id_value
+      "#{self.class.solr_type}-#{id_value.to_s}"
     end
 
     module ClassMethods
