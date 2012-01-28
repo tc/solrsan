@@ -110,6 +110,9 @@ A simple search query:
 More searching examples can be seen in test/unit/search_test.rb
 
 ## Changelog
+0.5.8
+Allow any version of activesupport > 3.1 for gem dependency.
+
 0.5.7
 Allow solr attribute field 'type' to be overridden.
 
