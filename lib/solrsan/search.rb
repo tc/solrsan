@@ -1,5 +1,3 @@
-require 'active_support/core_ext/module/attribute_accessors'
-
 module Solrsan
   module Search
     extend ActiveSupport::Concern
@@ -8,8 +6,9 @@ module Solrsan
       HL_START_TAG = "<mark>"
       HL_END_TAG = "</mark>"
 
-      @@solr_type = self.to_s.underscore
-      mattr_accessor :solr_type
+      def solr_type
+        self.to_s.underscore
+      end
 
       def perform_solr_command
         @rsolr ||= Solrsan::Config.instance.rsolr_object
@@ -44,7 +43,7 @@ module Solrsan
           :'facet.mincount' => 1}.merge(search_params)
 
         solr_params[:hl] = true unless search_params[:'hl.fl'].blank?
-        solr_params[:fq] = ["type:#{@@solr_type}"] + parse_fq(search_params[:fq])
+        solr_params[:fq] = ["type:#{solr_type}"] + parse_fq(search_params[:fq])
         solr_params
       end
 
@@ -180,7 +179,9 @@ if defined?(Rails) && Rails.env == "test"
     module Search
       extend ActiveSupport::Concern
       module ClassMethods
-        @@solr_type = "#{self.to_s.underscore}_test"
+        def solr_type
+          "#{self.to_s.underscore}_test"
+        end
       end
     end
   end

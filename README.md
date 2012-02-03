@@ -110,6 +110,9 @@ A simple search query:
 More searching examples can be seen in test/unit/search_test.rb
 
 ## Changelog
+0.5.9
+Reverted ability to custom modify solr 'type' attribute field.
+
 0.5.8
 Allow any version of activesupport > 3.1 for gem dependency.
 

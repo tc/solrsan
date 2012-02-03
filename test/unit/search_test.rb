@@ -13,6 +13,19 @@ class SearchTest < Test::Unit::TestCase
     Document.destroy_all_index_documents!
   end
 
+  def test_attributes
+    Document.solr_index(@document)
+    sleep 1
+    q = @document.attributes[:title]
+
+    response = Document.search(:q => q)
+    metadata = response[:metadata]
+    docs = response[:docs]
+    doc = docs.first
+
+    assert_equal "document_test", doc["type"]
+  end
+
   def test_simple_query
     Document.solr_index(@document)
     sleep 1
