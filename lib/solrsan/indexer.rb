@@ -21,7 +21,7 @@ module Solrsan
       doc.merge(converted_fields)
     end
 
-    def solr_index(opts={:add_attributes => {:commitWithin => 10}})
+    def solr_index(opts={:add_attributes => {:commitWithin => 1000}})
       self.class.solr_index(self, opts)
     end
 
@@ -40,7 +40,7 @@ module Solrsan
     end
 
     module ClassMethods
-      def solr_index(doc, opts={:add_attributes => {:commitWithin => 10}})
+      def solr_index(doc, opts={:add_attributes => {:commitWithin => 1000}})
         solr_docs = []
         if doc.respond_to?(:map)
           solr_docs = doc.map{|document| document.indexed_fields }

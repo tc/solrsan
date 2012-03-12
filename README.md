@@ -110,6 +110,9 @@ A simple search query:
 More searching examples can be seen in test/unit/search_test.rb
 
 ## Changelog
+0.6.0
+Corrected gemspec format. Thanks dinshaw.
+
 0.5.9
 Reverted ability to custom modify solr 'type' attribute field.
 
